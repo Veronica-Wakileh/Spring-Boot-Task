@@ -2,13 +2,10 @@ package org.exalt.training.springboottask.model;
 import jakarta.persistence.Id;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.lang.annotation.Documented;
-
 import java.time.LocalDateTime;
 
 @Data
-@Document
+@Document(collection = "activities")
 public class Activity {
 
     @Id
