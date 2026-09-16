@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: SpringBootTask
+
+  server:
+    port: 8081
+
+  datasource:
+    url: jdbc:sqlserver://localhost;instanceName=SQLEXPRESS;databaseName=SpringBootTask;encrypt=true;trustServerCertificate=true
+    username: miniapi_user
+    password: Vr0nWk#26_Xt!
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/ActivityDB
