@@ -25,14 +25,14 @@ public class Ticket {
     @Column
     @Enumerated(EnumType.STRING)
     private TicketPriority ticketPriority;
-
+//
     @ManyToOne
     @JoinColumn(columnDefinition = "id")
     private User ticketRequester;
-
-    @ManyToOne
-    @JoinColumn(columnDefinition = "id")
-    private User ticketAssignedAgent;
+//
+//    @ManyToOne
+//    @JoinColumn(columnDefinition = "id")
+//    private User ticketAssignedAgent;
 
     @Column
     private LocalDateTime dueAt;

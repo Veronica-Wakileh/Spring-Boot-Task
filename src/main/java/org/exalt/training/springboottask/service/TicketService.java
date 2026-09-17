@@ -39,6 +39,7 @@ public class TicketService {
         Ticket ticket = new Ticket();
         ticket.setTicketPriority(ticketRequest.ticketPriority());
         ticket.setTicketTitle(ticketRequest.ticketTitle());
+        ticket.setTicketRequester(userRepository.getReferenceById(ticketRequest.ticketRequester()));
         ticket.setTicketStatus(TicketStatus.OPEN);
 
         LocalDateTime now = LocalDateTime.now();
