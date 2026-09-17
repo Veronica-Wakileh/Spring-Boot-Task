@@ -1,6 +1,8 @@
 package org.exalt.training.springboottask.service;
 
 import lombok.AllArgsConstructor;
+import org.exalt.training.springboottask.dto.TicketRequest;
+import org.exalt.training.springboottask.dto.TicketRequestUpdateStatus;
 import org.exalt.training.springboottask.exception.OperationNotProcessedException;
 import org.exalt.training.springboottask.exception.TicketIdMismatchException;
 import org.exalt.training.springboottask.exception.TicketNotFoundException;
@@ -8,6 +10,7 @@ import org.exalt.training.springboottask.model.Ticket;
 import org.exalt.training.springboottask.model.TicketPriority;
 import org.exalt.training.springboottask.model.TicketStatus;
 import org.exalt.training.springboottask.repository.TicketRepository;
+import org.exalt.training.springboottask.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,7 +21,7 @@ import java.util.List;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
-
+    private final UserRepository userRepository;
 
     public List<Ticket> getAllTickets() {
         List<Ticket> tickets = ticketRepository.findAll();
@@ -31,8 +34,11 @@ public class TicketService {
 
     }
 
-    public Ticket createNewTicket(Ticket ticket){
+    public Ticket createNewTicket(TicketRequest ticketRequest){
 
+        Ticket ticket = new Ticket();
+        ticket.setTicketPriority(ticketRequest.ticketPriority());
+        ticket.setTicketTitle(ticketRequest.ticketTitle());
         ticket.setTicketStatus(TicketStatus.OPEN);
 
         LocalDateTime now = LocalDateTime.now();
@@ -53,19 +59,19 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    public Ticket updateTicketStatus(Long Id, TicketStatus status){
+    public Ticket updateTicketStatus(Long Id, TicketRequestUpdateStatus status){
 
         Ticket ticket = ticketRepository.findById(Id).orElseThrow(() -> {throw new OperationNotProcessedException("Updating a Non Existing Ticket Can't be Processed");});
 
-        if (ticket.getTicketStatus() == TicketStatus.OPEN && status != TicketStatus.IN_PROGRESS){
+        if (ticket.getTicketStatus() == TicketStatus.OPEN && status.ticketStatus()!= TicketStatus.IN_PROGRESS){
             throw new OperationNotProcessedException("OPEN Ticket's Status can be only Changed to IN_PROGRESS");
         }
 
-        if (ticket.getTicketStatus() == TicketStatus.IN_PROGRESS && status != TicketStatus.RESOLVED){
+        if (ticket.getTicketStatus() == TicketStatus.IN_PROGRESS && status.ticketStatus() != TicketStatus.RESOLVED){
             throw new OperationNotProcessedException("IN_PROGRESS Ticket's Status can be only Changed to RESOLVED");
         }
 
-        if (ticket.getTicketStatus() == TicketStatus.RESOLVED && status != TicketStatus.CLOSED){
+        if (ticket.getTicketStatus() == TicketStatus.RESOLVED && status.ticketStatus() != TicketStatus.CLOSED){
             throw new OperationNotProcessedException("RESOLVED Ticket's Status can be only Changed to CLOSED");
         }
 
@@ -73,7 +79,7 @@ public class TicketService {
             throw new OperationNotProcessedException("CLOSED Ticket's Status Can't be Changed");
         }
 
-        ticket.setTicketStatus(status);
+        ticket.setTicketStatus(status.ticketStatus());
         return ticketRepository.save(ticket);
     }
 

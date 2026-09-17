@@ -1,8 +1,9 @@
 package org.exalt.training.springboottask.controller;
 
 import lombok.AllArgsConstructor;
+import org.exalt.training.springboottask.dto.TicketRequest;
+import org.exalt.training.springboottask.dto.TicketRequestUpdateStatus;
 import org.exalt.training.springboottask.model.Ticket;
-import org.exalt.training.springboottask.model.TicketStatus;
 import org.exalt.training.springboottask.service.TicketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/tickets")
 @AllArgsConstructor
 public class TicketController {
 
@@ -32,9 +33,8 @@ public class TicketController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public String createTicket(@RequestBody Ticket ticket) {
-        return "Ticket Created Successfully with Id: " + ticketService.createNewTicket(ticket).getId();
+    public String createTicket(@RequestBody TicketRequest ticketRequest) {
+        return "Ticket Created Successfully with Id: " + ticketService.createNewTicket(ticketRequest);
     }
 
     @PutMapping("/update/{Id}")
@@ -49,7 +49,7 @@ public class TicketController {
     @PatchMapping("/update/status/{Id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public String updateTicketStatus(@PathVariable Long Id, @RequestParam TicketStatus status) {
+    public String updateTicketStatus(@PathVariable Long Id, @RequestBody TicketRequestUpdateStatus status) {
 
         ticketService.updateTicketStatus(Id, status);
         return "Ticket Status Updated Successfully !";
@@ -59,6 +59,7 @@ public class TicketController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long Id) {
         ticketService.deleteExistingTicket(Id);
+
     }
 
 }

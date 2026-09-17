@@ -1,16 +1,21 @@
 package org.exalt.training.springboottask;
 import org.exalt.training.springboottask.model.Ticket;
+import org.exalt.training.springboottask.model.User;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
-@EnableScheduling
 public class AppConfiguration {
 
     @Bean
+    @ConditionalOnBean(name = "users")
     public Ticket ticket (){
         return new Ticket();
+    }
+
+    @Bean
+    public User users (){
+        return new User();
     }
 }

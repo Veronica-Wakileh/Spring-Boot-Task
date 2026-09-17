@@ -3,13 +3,18 @@ spring:
     name: SpringBootTask
 
   server:
-    port: 8081
+    port: 8080
 
   datasource:
-    url: jdbc:sqlserver://localhost;instanceName=SQLEXPRESS;databaseName=SpringBootTask;encrypt=true;trustServerCertificate=true
+    url: jdbc:sqlserver://localhost:1433;databaseName=SpringBootTask;encrypt=true;trustServerCertificate=true
     username: miniapi_user
     password: Vr0nWk#26_Xt!
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
   data:
     mongodb:
